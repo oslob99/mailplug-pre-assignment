@@ -22,10 +22,4 @@ public class Board {
     @Column(name = "board_type")
     private String boardType;
 
-    @Column(name = "is_favorite")
-    private boolean isFavorite;
-
-    @Column(name = "order_no")
-    private long orderNo;
-
 }
