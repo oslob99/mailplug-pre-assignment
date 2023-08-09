@@ -13,15 +13,13 @@ import lombok.*;
 public class BoardResponseDTO {
 
     private long boardId;
-    private String displayName;
+    private String boardName;
     private String boardType;
-    private boolean isFavorite;
-    private long orderNo;
 
     public BoardResponseDTO toEntity(Board board){
         return BoardResponseDTO.builder()
                 .boardId(board.getBoardId())
-                .displayName(board.getBoardName())
+                .boardName(board.getBoardName())
                 .boardType(board.getBoardType())
                 .build();
     }

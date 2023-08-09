@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +24,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public BoardListResponseDTO getList(PageDTO pageDTO) {
+    public BoardListResponseDTO getList(PageDTO pageDTO, List<String> typeList) {
 
         Pageable pageable = PageRequest.of(
                 pageDTO.getOffset() - 1,
@@ -34,7 +32,12 @@ public class BoardService {
                 Sort.by(Sort.Direction.DESC,"boardType")
         );
 
-        Page<Board> boards = boardRepository.findAll(pageable);
+        Page<Board> boards;
+        if (typeList.isEmpty()){
+            boards = boardRepository.findAll(pageable);
+        }else {
+            boards = boardRepository.findByBoardTypeInIgnoreCase(typeList, pageable);
+        }
 
         log.info("board : {}",boards);
 
