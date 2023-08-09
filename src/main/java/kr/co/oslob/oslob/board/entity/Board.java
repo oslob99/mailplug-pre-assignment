@@ -16,8 +16,8 @@ public class Board {
     @Column(name = "board_id")
     private long boardId;
 
-    @Column(name = "display_name")
-    private String displayName;
+    @Column(name = "board_name")
+    private String boardName;
 
     @Column(name = "board_type")
     private String boardType;

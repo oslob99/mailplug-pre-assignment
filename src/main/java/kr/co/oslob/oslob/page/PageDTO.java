@@ -1,4 +1,4 @@
-package kr.co.oslob.oslob.board.dto.page;
+package kr.co.oslob.oslob.page;
 
 import lombok.Getter;
 import lombok.Setter;

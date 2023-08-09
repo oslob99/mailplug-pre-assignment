@@ -21,7 +21,7 @@ public class BoardResponseDTO {
     public BoardResponseDTO toEntity(Board board){
         return BoardResponseDTO.builder()
                 .boardId(board.getBoardId())
-                .displayName(board.getDisplayName())
+                .displayName(board.getBoardName())
                 .boardType(board.getBoardType())
                 .build();
     }
