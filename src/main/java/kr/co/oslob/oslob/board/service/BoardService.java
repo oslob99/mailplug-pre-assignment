@@ -5,7 +5,7 @@ import kr.co.oslob.oslob.board.dto.response.BoardResponseDTO;
 import kr.co.oslob.oslob.board.entity.Board;
 import kr.co.oslob.oslob.board.repository.BoardRepository;
 import kr.co.oslob.oslob.page.PageDTO;
-import kr.co.oslob.oslob.page.SearchDTO;
+import kr.co.oslob.oslob.page.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,30 +26,26 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
-    public BoardListResponseDTO getList(PageDTO pageDTO, SearchDTO searchDTO) {
-
-        List<String> typeList = searchDTO.getTypes() != null ? Arrays.asList(searchDTO.getTypes()) : Collections.emptyList();
+    public BoardListResponseDTO getList(PageDTO pageDTO) {
 
         Pageable pageable = PageRequest.of(
                 pageDTO.getOffset() - 1,
                 pageDTO.getLimit(),
-                Sort.by(Sort.Direction.DESC,"boardDate")
+                Sort.by(Sort.Direction.DESC,"boardType")
         );
 
-        Page<Board> boards;
-        if (typeList.isEmpty()){
-            boards = boardRepository.findAll(pageable);
-        }else {
-            boards = boardRepository.findByBoardTitleContainingIgnoreCaseOrBoardContentContainingIgnoreCaseOrBoardWriterContainingIgnoreCase(typeList,pageable);
-        }
+        Page<Board> boards = boardRepository.findAll(pageable);
 
-        List<BoardResponseDTO> list = boardRepository.findAll().stream().map(
+        log.info("board : {}",boards);
+
+        List<BoardResponseDTO> list = boards.stream().map(
                 board -> new BoardResponseDTO().toEntity(board)
         ).collect(Collectors.toList());
 
         return BoardListResponseDTO.builder()
                 .value(list)
-                .total(list.size())
+                .pageInfo(new PageResponseDTO<Board>(boards))
+                .count(list.size())
                 .build();
     }
 }

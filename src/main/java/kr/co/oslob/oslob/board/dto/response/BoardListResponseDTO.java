@@ -1,5 +1,7 @@
 package kr.co.oslob.oslob.board.dto.response;
 
+import kr.co.oslob.oslob.board.entity.Board;
+import kr.co.oslob.oslob.page.PageResponseDTO;
 import lombok.*;
 
 import java.util.List;
@@ -14,8 +16,6 @@ import java.util.List;
 public class BoardListResponseDTO {
 
     private List<BoardResponseDTO> value;
+    private PageResponseDTO<Board> pageInfo;
     private int count;
-    private int offset;
-    private int limit;
-    private int total;
 }

@@ -13,7 +13,7 @@ public class PageDTO {
     private int limit;
 
     public PageDTO(){
-        this.offset = 0;
-        this.limit = 20;
+        this.offset = 1;
+        this.limit = 10;
     }
 }

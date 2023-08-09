@@ -18,12 +18,12 @@ public class PageResponseDTO<T> {
     private boolean prev;
     private boolean next;
 
-    private int count;
+    private int total;
 
     private static final int PAGE_COUNT = 5;
 
     public PageResponseDTO(Page<T> pageData) {
-        this.count = (int) pageData.getTotalElements();
+        this.total = (int) pageData.getTotalElements();
         this.currentPage = pageData.getPageable().getPageNumber() + 1;
         this.endPage = (int) (Math.ceil((double) currentPage / PAGE_COUNT) * PAGE_COUNT);
         this.startPage = endPage - PAGE_COUNT + 1;
