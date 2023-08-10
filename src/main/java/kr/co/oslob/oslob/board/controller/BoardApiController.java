@@ -3,6 +3,7 @@ package kr.co.oslob.oslob.board.controller;
 import kr.co.oslob.oslob.board.dto.request.BoardRequestModifyDTO;
 import kr.co.oslob.oslob.board.dto.request.BoardRequestWriteDTO;
 import kr.co.oslob.oslob.board.dto.response.BoardListResponseDTO;
+import kr.co.oslob.oslob.board.dto.response.BoardResponseDTO;
 import kr.co.oslob.oslob.board.service.BoardService;
 import kr.co.oslob.oslob.page.PageDTO;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,16 @@ public class BoardApiController {
         BoardListResponseDTO requestDTO = boardService.getList(pageDTO,typeList);
 
         return ResponseEntity.ok().body(requestDTO);
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<?> detail(
+            @RequestParam Long boardId
+    ){
+
+        BoardResponseDTO responseDTO = boardService.detail(boardId);
+
+        return ResponseEntity.ok().body(responseDTO);
     }
 
     @PostMapping("/write")

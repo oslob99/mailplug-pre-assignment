@@ -3,6 +3,7 @@ package kr.co.oslob.oslob.board.service;
 import kr.co.oslob.oslob.board.dto.request.BoardRequestModifyDTO;
 import kr.co.oslob.oslob.board.dto.request.BoardRequestWriteDTO;
 import kr.co.oslob.oslob.board.dto.response.BoardListResponseDTO;
+import kr.co.oslob.oslob.board.dto.response.BoardResponseDTO;
 import kr.co.oslob.oslob.page.PageDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +37,21 @@ class BoardServiceTest {
 
         //then
         System.out.println("list 조회 : "+list);
+
+    }
+
+    @Test
+    @DisplayName("23번 게시판이 상세조회가 되어야만한다")
+    void getDetail() {
+
+        //given
+        Long boardId = 23L;
+
+        //when
+        BoardResponseDTO detail = boardService.detail(boardId);
+
+        //then
+        System.out.println("detail 조회 : "+detail);
 
     }
 

@@ -56,6 +56,17 @@ public class BoardService {
                 .build();
     }
 
+    public BoardResponseDTO detail(Long boardId) {
+
+        Board findByBoard = getFindByBoard(boardId);
+
+        return BoardResponseDTO.builder()
+                .boardId(boardId)
+                .boardName(findByBoard.getBoardName())
+                .boardType(findByBoard.getBoardType())
+                .build();
+    }
+
     public void write(BoardRequestWriteDTO writeDTO) {
 
         Board saved = boardRepository.save(writeDTO.toEntity());
@@ -65,13 +76,9 @@ public class BoardService {
 
     public void modify(BoardRequestModifyDTO modifyDTO) {
 
-        Board findByBoard = boardRepository.findById(modifyDTO.getBoardId()).orElseThrow(
-                () -> {
-                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, modifyDTO.getBoardId());
-                }
-        );
+        Board findByBoard = getFindByBoard(modifyDTO.getBoardId());
 
-            findByBoard.setBoardName(modifyDTO.getBoardName());
+        findByBoard.setBoardName(modifyDTO.getBoardName());
             findByBoard.setBoardType(modifyDTO.getBoardType());
 
             boardRepository.save(findByBoard);
@@ -79,13 +86,23 @@ public class BoardService {
 
     public void delete(Long boardId) {
 
-        Board findByBoard = boardRepository.findById(boardId).orElseThrow(
-                () -> {
-                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, boardId);
-                }
-        );
+        Board findByBoard = getFindByBoard(boardId);
 
         boardRepository.delete(findByBoard);
 
     }
+
+    /**
+     * @param boardId
+     * @return boardId의 게시글 찾아 Board를 반환하는 메서드
+     */
+    private Board getFindByBoard(Long boardId) {
+        return boardRepository.findById(boardId).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, boardId);
+                }
+        );
+    }
+
+
 }

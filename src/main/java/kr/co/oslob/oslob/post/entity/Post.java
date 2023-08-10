@@ -31,9 +31,6 @@ public class Post {
     @Column(name = "post_content")
     private String postContent;
 
-    @Column(name = "post_tag")
-    private String postTag;
-
     @Column(name = "post_writer")
     private String postWriter;
 
@@ -45,7 +42,4 @@ public class Post {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<HashTag> hashTags = new ArrayList<>();
 }
