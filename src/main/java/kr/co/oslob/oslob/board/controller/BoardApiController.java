@@ -8,6 +8,7 @@ import kr.co.oslob.oslob.page.PageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -40,18 +41,20 @@ public class BoardApiController {
 
     @PostMapping("/write")
     public ResponseEntity<?> write(
-            @RequestBody BoardRequestWriteDTO writeDTO
+           @Validated @RequestBody BoardRequestWriteDTO writeDTO
     ){
 
+        boardService.write(writeDTO);
 
         return ResponseEntity.ok().body("");
     }
 
     @PostMapping("/modify")
     public ResponseEntity<?> modify(
-            @RequestBody BoardRequestModifyDTO modifyDTO
+            @Validated @RequestBody BoardRequestModifyDTO modifyDTO
     ){
 
+        boardService.modify(modifyDTO);
 
         return ResponseEntity.ok().body("");
     }

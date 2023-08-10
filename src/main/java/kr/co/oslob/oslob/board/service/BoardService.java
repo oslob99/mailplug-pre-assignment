@@ -1,5 +1,7 @@
 package kr.co.oslob.oslob.board.service;
 
+import kr.co.oslob.oslob.board.dto.request.BoardRequestModifyDTO;
+import kr.co.oslob.oslob.board.dto.request.BoardRequestWriteDTO;
 import kr.co.oslob.oslob.board.dto.response.BoardListResponseDTO;
 import kr.co.oslob.oslob.board.dto.response.BoardResponseDTO;
 import kr.co.oslob.oslob.board.entity.Board;
@@ -50,5 +52,20 @@ public class BoardService {
                 .pageInfo(new PageResponseDTO<Board>(boards))
                 .count(list.size())
                 .build();
+    }
+
+    public void write(BoardRequestWriteDTO writeDTO) {
+
+        Board saved = boardRepository.save(writeDTO.toEntity());
+
+
+    }
+
+    public void modify(BoardRequestModifyDTO modifyDTO) {
+
+        boardRepository.findById(modifyDTO.getBoardId()).orElseThrow(
+
+        );
+
     }
 }
