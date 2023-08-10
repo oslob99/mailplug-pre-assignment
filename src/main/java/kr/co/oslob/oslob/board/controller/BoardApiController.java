@@ -49,7 +49,7 @@ public class BoardApiController {
         return ResponseEntity.ok().body("");
     }
 
-    @PostMapping("/modify")
+    @PatchMapping("/modify")
     public ResponseEntity<?> modify(
             @Validated @RequestBody BoardRequestModifyDTO modifyDTO
     ){
@@ -59,8 +59,12 @@ public class BoardApiController {
         return ResponseEntity.ok().body("");
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete(){
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> delete(
+            @RequestParam Long boardId
+    ){
+
+        boardService.delete(boardId);
 
         return null;
     }

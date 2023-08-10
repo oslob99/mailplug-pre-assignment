@@ -6,6 +6,8 @@ import kr.co.oslob.oslob.board.dto.response.BoardListResponseDTO;
 import kr.co.oslob.oslob.board.dto.response.BoardResponseDTO;
 import kr.co.oslob.oslob.board.entity.Board;
 import kr.co.oslob.oslob.board.repository.BoardRepository;
+import kr.co.oslob.oslob.common.exception.ErrorCode;
+import kr.co.oslob.oslob.common.exception.NotFoundBoardException;
 import kr.co.oslob.oslob.page.PageDTO;
 import kr.co.oslob.oslob.page.PageResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -63,9 +65,27 @@ public class BoardService {
 
     public void modify(BoardRequestModifyDTO modifyDTO) {
 
-        boardRepository.findById(modifyDTO.getBoardId()).orElseThrow(
-
+        Board findByBoard = boardRepository.findById(modifyDTO.getBoardId()).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, modifyDTO.getBoardId());
+                }
         );
+
+            findByBoard.setBoardName(modifyDTO.getBoardName());
+            findByBoard.setBoardType(modifyDTO.getBoardType());
+
+            boardRepository.save(findByBoard);
+    }
+
+    public void delete(Long boardId) {
+
+        Board findByBoard = boardRepository.findById(boardId).orElseThrow(
+                () -> {
+                    throw new NotFoundBoardException(ErrorCode.NOT_FOUND_BOARD, boardId);
+                }
+        );
+
+        boardRepository.delete(findByBoard);
 
     }
 }
