@@ -18,10 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -60,10 +57,7 @@ public class PostService {
     }
 
     public PostResponseDTO detail(Long postId) {
-
-        Post post = findByPost(postId);
-
-        return new PostResponseDTO().toEntity(post);
+        return new PostResponseDTO().toEntity(findByPost(postId));
     }
 
     public void write(PostRequestWriteDTO writeDTO) {
