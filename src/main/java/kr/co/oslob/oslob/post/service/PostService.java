@@ -10,6 +10,7 @@ import kr.co.oslob.oslob.post.dto.response.PostListResponseDTO;
 import kr.co.oslob.oslob.post.dto.response.PostResponseDTO;
 import kr.co.oslob.oslob.post.entity.Post;
 import kr.co.oslob.oslob.post.repository.PostRepository;
+import kr.co.oslob.oslob.reply.dto.response.ReplyResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -60,25 +61,21 @@ public class PostService {
         return new PostResponseDTO().toEntity(findByPost(postId));
     }
 
-    public void write(PostRequestWriteDTO writeDTO) {
-
-        Post savedPost = postRepository.save(writeDTO.toEntity());
-
+    public PostResponseDTO write(PostRequestWriteDTO writeDTO) {
+        return new PostResponseDTO().toEntity(postRepository.save(writeDTO.toEntity()));
     }
 
-    public void modify(PostRequestModifyDTO modifyDTO) {
+    public PostResponseDTO modify(PostRequestModifyDTO modifyDTO) {
         Post findByPost = findByPost(modifyDTO.getPostId());
 
         findByPost.setPostTitle(modifyDTO.getPostTitle());
         findByPost.setPostContent(modifyDTO.getPostContent());
         findByPost.setPostWriter(modifyDTO.getPostWriter());
 
-        postRepository.save(findByPost);
-
+        return new PostResponseDTO().toEntity(postRepository.save(findByPost));
     }
 
     public void delete(Long postId) {
-
         postRepository.delete(findByPost(postId));
     }
 

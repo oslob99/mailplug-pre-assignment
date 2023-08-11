@@ -58,21 +58,18 @@ public class ReplyService {
         return new ReplyResponseDTO().toEntity(findByReply(replyId));
     }
 
-    public void write(ReplyRequestWriteDTO writeDTO) {
-
-        Reply savedReply = replyRepository.save(writeDTO.toEntity());
-
+    public ReplyResponseDTO write(ReplyRequestWriteDTO writeDTO) {
+        return new ReplyResponseDTO().toEntity(replyRepository.save(writeDTO.toEntity()));
     }
 
-    public void modify(ReplyRequestModifyDTO modifyDTO) {
+    public ReplyResponseDTO modify(ReplyRequestModifyDTO modifyDTO) {
 
         Reply byReply = findByReply(modifyDTO.getReplyId());
 
         byReply.setReplyContent(modifyDTO.getReplyContent());
         byReply.setReplyWriter(modifyDTO.getReplyWriter());
 
-        replyRepository.save(byReply);
-
+        return new ReplyResponseDTO().toEntity(replyRepository.save(byReply));
     }
 
     public void delete(Long replyId) {

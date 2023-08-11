@@ -9,8 +9,11 @@ import kr.co.oslob.oslob.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static kr.co.oslob.oslob.common.exception.ErrorCode.INVALID_PARAMETER;
 
 @RestController
 @RequestMapping("/api/oslob/reply")
@@ -47,30 +50,46 @@ public class ReplyApiController {
     @PostMapping("/write")
     public ResponseEntity<?> write(
             @Validated @RequestBody ReplyRequestWriteDTO writeDTO
+            ,BindingResult BindingResult
     ){
 
-        replyService.write(writeDTO);
+        if (BindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 
-        return ResponseEntity.ok().body("");
+            ReplyResponseDTO responseDTO = replyService.write(writeDTO);
+            return ResponseEntity.ok().body(responseDTO);
     }
 
     @PatchMapping("/modify")
     public ResponseEntity<?> modify(
             @Validated @RequestBody ReplyRequestModifyDTO modifyDTO
+            , BindingResult bindingResult
     ){
 
-        replyService.modify(modifyDTO);
+        if(bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 
-        return ResponseEntity.ok().body("");
+        try {
+            ReplyResponseDTO responseDTO = replyService.modify(modifyDTO);
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 댓글은 존재하지 않습니다.");
+        }
     }
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> delete(
             @RequestParam Long replyId
     ){
-
-        replyService.delete(replyId);
-
-        return null;
+        try {
+            replyService.delete(replyId);
+            return ResponseEntity.ok().body("삭제가 완료되었습니다.");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 댓글은 존재하지 않습니다.");
+        }
     }
 }
