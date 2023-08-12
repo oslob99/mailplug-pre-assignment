@@ -73,9 +73,7 @@ public class ReplyService {
     }
 
     public void delete(Long replyId) {
-
         replyRepository.delete(findByReply(replyId));
-
     }
 
     private Reply findByReply(Long replyId) {

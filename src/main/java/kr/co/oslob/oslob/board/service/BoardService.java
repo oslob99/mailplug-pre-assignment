@@ -67,21 +67,18 @@ public class BoardService {
                 .build();
     }
 
-    public void write(BoardRequestWriteDTO writeDTO) {
-
-        Board saved = boardRepository.save(writeDTO.toEntity());
-
-
+    public BoardResponseDTO write(BoardRequestWriteDTO writeDTO) {
+        return new BoardResponseDTO().toEntity(boardRepository.save(writeDTO.toEntity()));
     }
 
-    public void modify(BoardRequestModifyDTO modifyDTO) {
+    public BoardResponseDTO modify(BoardRequestModifyDTO modifyDTO) {
 
         Board findByBoard = getFindByBoard(modifyDTO.getBoardId());
 
         findByBoard.setBoardName(modifyDTO.getBoardName());
-            findByBoard.setBoardType(modifyDTO.getBoardType());
+        findByBoard.setBoardType(modifyDTO.getBoardType());
 
-            boardRepository.save(findByBoard);
+        return new BoardResponseDTO().toEntity(boardRepository.save(findByBoard));
     }
 
     public void delete(Long boardId) {

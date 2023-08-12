@@ -68,19 +68,27 @@ public class BoardApiController {
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
         }
 
-        boardService.write(writeDTO);
-
-        return ResponseEntity.ok().body("");
+        BoardResponseDTO responseDTO = boardService.write(writeDTO);
+        return ResponseEntity.ok().body(responseDTO);
     }
 
     @PatchMapping("/modify")
     public ResponseEntity<?> modify(
             @Validated @RequestBody BoardRequestModifyDTO modifyDTO
+            , BindingResult bindingResult
     ){
 
-        boardService.modify(modifyDTO);
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 
-        return ResponseEntity.ok().body("");
+        try {
+            BoardResponseDTO responseDTO = boardService.modify(modifyDTO);
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다.");
+        }
     }
 
     @DeleteMapping("/delete")
@@ -88,9 +96,13 @@ public class BoardApiController {
             @RequestParam Long boardId
     ){
 
-        boardService.delete(boardId);
-
-        return null;
+        try {
+            boardService.delete(boardId);
+            return ResponseEntity.ok().body("삭제가 완료되었습니다.");
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다.");
+        }
     }
 
 

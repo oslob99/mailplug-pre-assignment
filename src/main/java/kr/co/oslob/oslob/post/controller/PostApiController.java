@@ -42,9 +42,14 @@ public class PostApiController {
             @RequestParam Long postId
     ){
 
-        PostResponseDTO responseDTO = postService.detail(postId);
+        try {
+            PostResponseDTO responseDTO = postService.detail(postId);
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 게시글은 존재하지 않습니다.");
+        }
 
-        return ResponseEntity.ok().body(responseDTO);
     }
 
     @PostMapping("/write")
