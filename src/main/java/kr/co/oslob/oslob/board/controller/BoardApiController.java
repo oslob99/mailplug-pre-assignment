@@ -9,12 +9,15 @@ import kr.co.oslob.oslob.page.PageDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import static kr.co.oslob.oslob.common.exception.ErrorCode.INVALID_PARAMETER;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,15 +48,25 @@ public class BoardApiController {
             @RequestParam Long boardId
     ){
 
-        BoardResponseDTO responseDTO = boardService.detail(boardId);
+        try {
+            BoardResponseDTO responseDTO = boardService.detail(boardId);
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 게시판은 존재하지 않습니다.");
+        }
 
-        return ResponseEntity.ok().body(responseDTO);
     }
 
     @PostMapping("/write")
     public ResponseEntity<?> write(
            @Validated @RequestBody BoardRequestWriteDTO writeDTO
+           , BindingResult bindingResult
     ){
+
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.badRequest().body(INVALID_PARAMETER);
+        }
 
         boardService.write(writeDTO);
 

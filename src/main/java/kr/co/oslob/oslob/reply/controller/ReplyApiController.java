@@ -42,18 +42,23 @@ public class ReplyApiController {
             @RequestParam Long replyId
     ){
 
-        ReplyResponseDTO responseDTO = replyService.detail(replyId);
+        try {
+            ReplyResponseDTO responseDTO = replyService.detail(replyId);
+            return ResponseEntity.ok().body(responseDTO);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("해당 댓글은 존재하지 않습니다.");
+        }
 
-        return ResponseEntity.ok().body(responseDTO);
     }
 
     @PostMapping("/write")
     public ResponseEntity<?> write(
             @Validated @RequestBody ReplyRequestWriteDTO writeDTO
-            ,BindingResult BindingResult
+            ,BindingResult bindingResult
     ){
 
-        if (BindingResult.hasErrors()){
+        if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
         }
 
