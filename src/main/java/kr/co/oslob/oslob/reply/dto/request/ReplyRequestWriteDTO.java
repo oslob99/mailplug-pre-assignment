@@ -2,6 +2,7 @@ package kr.co.oslob.oslob.reply.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import kr.co.oslob.oslob.post.entity.Post;
 import kr.co.oslob.oslob.reply.entity.Reply;
 import lombok.*;
 
@@ -21,10 +22,11 @@ public class ReplyRequestWriteDTO {
     @NotBlank
     private String postWriter;
 
-    public Reply toEntity(){
+    public Reply toEntity(Post post){
         return Reply.builder()
                 .replyContent(this.getReplyContent())
                 .replyWriter(this.getPostWriter())
+                .post(post)
                 .build();
     }
 }

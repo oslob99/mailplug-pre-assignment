@@ -12,6 +12,9 @@ public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
     @Query("SELECT r FROM Reply r " +
             "WHERE (:keyword IS NULL OR LOWER(r.replyContent) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(r.replyWriter) LIKE LOWER(CONCAT('%', :keyword, '%'))) ")
-    Page<Reply> findByKeyword(String keyword, Pageable pageable);
+            "OR LOWER(r.replyWriter) LIKE LOWER(CONCAT('%', :keyword, '%')))" +
+            "AND r.post.postId = :postId")
+    Page<Reply> findByKeyword(Long postId, String keyword, Pageable pageable);
+
+    Page<Reply> findByPostPostId(Long postId, Pageable pageable);
 }

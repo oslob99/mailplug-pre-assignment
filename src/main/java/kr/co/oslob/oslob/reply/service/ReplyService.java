@@ -1,9 +1,12 @@
 package kr.co.oslob.oslob.reply.service;
 
 import kr.co.oslob.oslob.common.exception.ErrorCode;
+import kr.co.oslob.oslob.common.exception.NotFoundPostException;
 import kr.co.oslob.oslob.common.exception.NotFoundReplyException;
 import kr.co.oslob.oslob.page.PageDTO;
 import kr.co.oslob.oslob.page.PageResponseDTO;
+import kr.co.oslob.oslob.post.entity.Post;
+import kr.co.oslob.oslob.post.repository.PostRepository;
 import kr.co.oslob.oslob.reply.dto.request.ReplyRequestModifyDTO;
 import kr.co.oslob.oslob.reply.dto.request.ReplyRequestWriteDTO;
 import kr.co.oslob.oslob.reply.dto.response.ReplyListResponseDTO;
@@ -25,14 +28,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReplyService {
 
+    private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
 
     /**
+     * @param postId 게시판 번호
      * @param pageDTO 댓글 페이징 처리 정보
      * @param keyword 댓글 내용, 작성자를 조회하는 키워드
      * @return 페이징 처리와 키워드를 조회해 댓글 전체 목록을 반환한다
      */
-    public ReplyListResponseDTO getList(PageDTO pageDTO, String keyword) {
+    public ReplyListResponseDTO getList(Long postId, PageDTO pageDTO, String keyword) {
+
+        // 게시글이 존재하는지 확인
+        postRepository.findById(postId).orElseThrow(
+                () -> new NotFoundPostException(ErrorCode.INVALID_PARAMETER,postId)
+        );
 
         Pageable pageable = PageRequest.of(
                 pageDTO.getOffset() - 1,
@@ -43,9 +53,9 @@ public class ReplyService {
         Page<Reply> replies;
 
         if (keyword.isEmpty()){
-            replies = replyRepository.findAll(pageable);
+            replies = replyRepository.findByPostPostId(postId, pageable);
         }else {
-            replies = replyRepository.findByKeyword(keyword, pageable);
+            replies = replyRepository.findByKeyword(postId, keyword, pageable);
         }
 
         List<ReplyResponseDTO> responseDTOList = replies.stream().map(
@@ -68,11 +78,15 @@ public class ReplyService {
     }
 
     /**
+     * @param postId 게시글 번호
      * @param writeDTO 작성에 필요한 정보
      * @return 작성된 댓글을 반환한다
      */
-    public ReplyResponseDTO write(ReplyRequestWriteDTO writeDTO) {
-        return new ReplyResponseDTO().toEntity(replyRepository.save(writeDTO.toEntity()));
+    public ReplyResponseDTO write(Long postId, ReplyRequestWriteDTO writeDTO) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NotFoundPostException(ErrorCode.INVALID_PARAMETER, postId)
+        );
+        return new ReplyResponseDTO().toEntity(replyRepository.save(writeDTO.toEntity(post)));
     }
 
     /**

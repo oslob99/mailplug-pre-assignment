@@ -23,16 +23,17 @@ public class ReplyApiController {
 
     private final ReplyService replyService;
 
-    @GetMapping("/list")
+    @GetMapping("/list/{postId}")
     public ResponseEntity<?> list(
-            PageDTO pageDTO
+            @PathVariable Long postId
+            ,PageDTO pageDTO
             , @RequestParam(required = false)String keyword
     ){
 
-        log.info("/api/oslob/reply/list?offset={}&limit={}&keyword={}"
-                ,pageDTO.getOffset(),pageDTO.getLimit(),keyword);
+        log.info("/api/oslob/reply/list/{}?offset={}&limit={}&keyword={}"
+                ,postId,pageDTO.getOffset(),pageDTO.getLimit(),keyword);
 
-        ReplyListResponseDTO responseDTO = replyService.getList(pageDTO, keyword);
+        ReplyListResponseDTO responseDTO = replyService.getList(postId, pageDTO, keyword);
 
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -53,9 +54,10 @@ public class ReplyApiController {
 
     }
 
-    @PostMapping("/write")
+    @PostMapping("/write/{postId}")
     public ResponseEntity<?> write(
-            @Validated @RequestBody ReplyRequestWriteDTO writeDTO
+            @PathVariable Long postId
+            ,@Validated @RequestBody ReplyRequestWriteDTO writeDTO
             ,BindingResult bindingResult
     ){
         log.info("/api/oslob/reply/write : writeDTO : {}",writeDTO);
@@ -64,7 +66,7 @@ public class ReplyApiController {
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
         }
 
-            ReplyResponseDTO responseDTO = replyService.write(writeDTO);
+            ReplyResponseDTO responseDTO = replyService.write(postId, writeDTO);
             return ResponseEntity.ok().body(responseDTO);
     }
 
