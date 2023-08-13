@@ -1,5 +1,6 @@
 package kr.co.oslob.oslob.board.service;
 
+import jakarta.validation.constraints.AssertTrue;
 import kr.co.oslob.oslob.board.dto.request.BoardRequestModifyDTO;
 import kr.co.oslob.oslob.board.dto.request.BoardRequestWriteDTO;
 import kr.co.oslob.oslob.board.dto.response.BoardListResponseDTO;
@@ -13,24 +14,25 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 @SpringBootTest
-@Transactional
-@Rollback
+//@Transactional
+//@Rollback
 class BoardServiceTest {
 
     @Autowired
     private BoardService boardService;
 
     @Test
-    @DisplayName("페이징 요청을 보내면 페이징 처리된 모든 게시판이 조회되어야한다")
+    @DisplayName("페이징 요청을 보내면 페이징 처리와 키워드 중복 필터링글 모든 게시판이 조회되어야한다")
     void getList() {
 
         //given
         PageDTO pageDTO = new PageDTO();
-        List<String> typeList = new ArrayList<>();
+        List<String> typeList = Collections.emptyList();
 
         //when
         BoardListResponseDTO list = boardService.getList(pageDTO, typeList);
@@ -45,14 +47,12 @@ class BoardServiceTest {
     void getDetail() {
 
         //given
-        Long boardId = 23L;
-
+        Long boardId = 5L;
         //when
         BoardResponseDTO detail = boardService.detail(boardId);
 
         //then
         System.out.println("detail 조회 : "+detail);
-
     }
 
     @Test
@@ -61,14 +61,13 @@ class BoardServiceTest {
 
         //given
         BoardRequestWriteDTO dto = new BoardRequestWriteDTO();
-        dto.setBoardName("자유게시판");
-        dto.setBoardType("일반");
+        dto.setBoardName("공지 게시판");
+        dto.setBoardType("고급");
 
         //when
         boardService.write(dto);
 
         PageDTO pageDTO = new PageDTO();
-        pageDTO.setLimit(50);
         List<String> typeList = new ArrayList<>();
 
         BoardListResponseDTO list = boardService.getList(pageDTO, typeList);

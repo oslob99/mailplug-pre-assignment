@@ -14,6 +14,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p " +
             "WHERE (:keyword IS NULL OR LOWER(p.postTitle) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "OR LOWER(p.postContent) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(p.postWriter) LIKE LOWER(CONCAT('%', :keyword, '%')))")
-    Page<Post> findByKeyword(String keyword, Pageable pageable);
+            "OR LOWER(p.postWriter) LIKE LOWER(CONCAT('%', :keyword, '%')))" +
+            "AND p.board.boardId = :boardId")
+    Page<Post> findByKeyword(Long boardId, String keyword, Pageable pageable);
+
+    Page<Post> findByBoardBoardId(Long boardId, Pageable pageable);
 }

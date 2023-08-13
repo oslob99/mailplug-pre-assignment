@@ -2,6 +2,7 @@ package kr.co.oslob.oslob.post.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import kr.co.oslob.oslob.board.entity.Board;
 import kr.co.oslob.oslob.post.entity.Post;
 import lombok.*;
 
@@ -25,11 +26,12 @@ public class PostRequestWriteDTO {
     @NotBlank
     private String postWriter;
 
-    public Post toEntity(){
+    public Post toEntity(Board board){
         return Post.builder()
                 .postTitle(this.postTitle)
                 .postContent(this.postContent)
                 .postWriter(this.postWriter)
+                .board(board)
                 .build();
     }
 }

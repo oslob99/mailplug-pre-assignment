@@ -23,16 +23,17 @@ public class PostApiController {
 
     private final PostService postService;
 
-    @GetMapping("/list")
+    @GetMapping("/list/{boardId}")
     public ResponseEntity<?> list(
-            PageDTO pageDTO
+            @PathVariable Long boardId
+            ,PageDTO pageDTO
             , @RequestParam(required = false)String keyword
             ){
 
-        log.info("/api/oslob/post/list?offset={}&limit={}&keyword={}"
-                ,pageDTO.getOffset(),pageDTO.getLimit(),keyword);
+        log.info("/api/oslob/post/list/{}?offset={}&limit={}&keyword={}"
+                ,boardId,pageDTO.getOffset(),pageDTO.getLimit(),keyword);
 
-        PostListResponseDTO responseDTO = postService.getList(pageDTO, keyword);
+        PostListResponseDTO responseDTO = postService.getList(boardId, pageDTO, keyword);
 
         return ResponseEntity.ok().body(responseDTO);
     }
@@ -53,18 +54,19 @@ public class PostApiController {
 
     }
 
-    @PostMapping("/write")
+    @PostMapping("/write/{boardId}")
     public ResponseEntity<?> write(
-            @Validated @RequestBody PostRequestWriteDTO writeDTO
+            @PathVariable Long boardId
+            ,@Validated @RequestBody PostRequestWriteDTO writeDTO
             , BindingResult bindingResult
     ){
-        log.info("/api/oslob/post/write : writeDTO : {}",writeDTO);
+        log.info("/api/oslob/post/write/{} : writeDTO : {}",boardId,writeDTO);
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
         }
 
-        PostResponseDTO responseDTO = postService.write(writeDTO);
+        PostResponseDTO responseDTO = postService.write(boardId,writeDTO);
 
         return ResponseEntity.ok().body(responseDTO);
     }

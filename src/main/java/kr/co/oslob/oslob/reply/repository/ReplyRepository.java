@@ -9,8 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
-    @Query("SELECT p FROM Post p " +
-            "WHERE (:keyword IS NULL OR LOWER(p.replyContent) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(p.replyWriter) LIKE LOWER(CONCAT('%', :keyword, '%')) ")
+
+    @Query("SELECT r FROM Reply r " +
+            "WHERE (:keyword IS NULL OR LOWER(r.replyContent) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
+            "OR LOWER(r.replyWriter) LIKE LOWER(CONCAT('%', :keyword, '%'))) ")
     Page<Reply> findByKeyword(String keyword, Pageable pageable);
 }
