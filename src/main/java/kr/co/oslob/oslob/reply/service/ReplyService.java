@@ -52,7 +52,7 @@ public class ReplyService {
 
         Page<Reply> replies;
 
-        if (keyword.isEmpty()){
+        if (keyword == null){
             replies = replyRepository.findByPostPostId(postId, pageable);
         }else {
             replies = replyRepository.findByKeyword(postId, keyword, pageable);

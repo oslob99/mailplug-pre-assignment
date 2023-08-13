@@ -52,7 +52,7 @@ public class PostService {
 
         Page<Post> posts;
 
-        if (keyword.isEmpty()){
+        if (keyword == null){
             posts = postRepository.findByBoardBoardId(boardId,pageable);
         }else {
             posts = postRepository.findByKeyword(boardId, keyword, pageable);

@@ -20,12 +20,12 @@ public class ReplyRequestWriteDTO {
     private String replyContent;
 
     @NotBlank
-    private String postWriter;
+    private String replyWriter;
 
     public Reply toEntity(Post post){
         return Reply.builder()
                 .replyContent(this.getReplyContent())
-                .replyWriter(this.getPostWriter())
+                .replyWriter(this.getReplyWriter())
                 .post(post)
                 .build();
     }
