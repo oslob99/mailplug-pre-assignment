@@ -219,7 +219,7 @@ public enum ErrorCode implements CustomErrorCode{
 
 <br><br>
 ### 데이터베이스 스키마
-![스크린샷 2023-08-14 오전 3.00.00.png](..%2F..%2F..%2Fvar%2Ffolders%2Fhw%2F3wzrqc0d729f_46kn7ftmx680000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_fIoZXu%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-08-14%20%EC%98%A4%EC%A0%84%203.00.00.png)
+<img width="1174" alt="스크린샷 2023-08-14 오전 3 28 43" src="https://github.com/oslob99/mailplug-pre-assignment/assets/126937987/0aade555-b7ca-4748-a844-75e641d5a893">
 ### Notion API 명세서
 [노션 바로가기](https://common-sheep-1e7.notion.site/API-3596a39c6a8d45f5b319aa5c4559c64e?pvs=4)
 
