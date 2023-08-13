@@ -223,8 +223,10 @@ public enum ErrorCode implements CustomErrorCode{
 ### Notion API 명세서
 [노션 바로가기](https://common-sheep-1e7.notion.site/API-3596a39c6a8d45f5b319aa5c4559c64e?pvs=4)
 
-![스크린샷 2023-08-14 오전 2.51.33.png](..%2FDesktop%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-08-14%20%EC%98%A4%EC%A0%84%202.51.33.png)
+![스크린샷 2023-08-14 오전 3 30 33](https://github.com/oslob99/mailplug-pre-assignment/assets/126937987/4222437d-0ac9-48db-ba01-eb97acdbc6a0)
 
-![스크린샷 2023-08-14 오전 2.51.49.png](..%2FDesktop%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202023-08-14%20%EC%98%A4%EC%A0%84%202.51.49.png)
+
+![스크린샷 2023-08-14 오전 3 30 48](https://github.com/oslob99/mailplug-pre-assignment/assets/126937987/f9d6c4f9-e39c-4494-9da3-9401c97e485d)
+
 <br><br>
 
