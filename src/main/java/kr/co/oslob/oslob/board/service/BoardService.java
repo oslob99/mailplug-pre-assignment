@@ -28,6 +28,11 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    /**
+     * @param pageDTO 게시판 페이징 처리 정보
+     * @param typeList 게시판 타입을 중복 필터링 할 정보
+     * @return 게시판 타입 중복 필터링 처리와 페이징 처리로 조회해 게시판 전체 목록을 반환한다
+     */
     public BoardListResponseDTO getList(PageDTO pageDTO, List<String> typeList) {
 
         Pageable pageable = PageRequest.of(
@@ -56,6 +61,10 @@ public class BoardService {
                 .build();
     }
 
+    /**
+     * @param boardId 상세보기할 게시판 번호
+     * @return 상세보기에 필요한 게시판 정보를 반환한다
+     */
     public BoardResponseDTO detail(Long boardId) {
 
         Board findByBoard = getFindByBoard(boardId);
@@ -67,10 +76,18 @@ public class BoardService {
                 .build();
     }
 
+    /**
+     * @param writeDTO 작성에 필요한 정보
+     * @return 작성된 게시판을 반환한다
+     */
     public BoardResponseDTO write(BoardRequestWriteDTO writeDTO) {
         return new BoardResponseDTO().toEntity(boardRepository.save(writeDTO.toEntity()));
     }
 
+    /**
+     * @param modifyDTO 수정에 필요한 정보
+     * @return 수정된 게시판을 반환한다
+     */
     public BoardResponseDTO modify(BoardRequestModifyDTO modifyDTO) {
 
         Board findByBoard = getFindByBoard(modifyDTO.getBoardId());
@@ -81,17 +98,16 @@ public class BoardService {
         return new BoardResponseDTO().toEntity(boardRepository.save(findByBoard));
     }
 
+    /**
+     * @param boardId 삭제할 게시판 번호
+     */
     public void delete(Long boardId) {
-
-        Board findByBoard = getFindByBoard(boardId);
-
-        boardRepository.delete(findByBoard);
-
+        boardRepository.delete(getFindByBoard(boardId));
     }
 
     /**
-     * @param boardId
-     * @return boardId의 게시글 찾아 Board를 반환하는 메서드
+     * @param boardId 조회할 게시판 번호
+     * @return 예외처리를 포함해 게시판을 반환하다
      */
     private Board getFindByBoard(Long boardId) {
         return boardRepository.findById(boardId).orElseThrow(
