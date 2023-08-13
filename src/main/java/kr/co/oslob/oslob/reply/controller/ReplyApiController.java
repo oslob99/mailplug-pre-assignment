@@ -29,7 +29,7 @@ public class ReplyApiController {
             , @RequestParam(required = false)String keyword
     ){
 
-        log.info("/api/oslob/board/list?offset={}&limit={}&keyword={}"
+        log.info("/api/oslob/reply/list?offset={}&limit={}&keyword={}"
                 ,pageDTO.getOffset(),pageDTO.getLimit(),keyword);
 
         ReplyListResponseDTO responseDTO = replyService.getList(pageDTO, keyword);
@@ -37,10 +37,11 @@ public class ReplyApiController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{replyId}")
     public ResponseEntity<?> detail(
-            @RequestParam Long replyId
+            @PathVariable Long replyId
     ){
+        log.info("/api/oslob/reply/detail/{}",replyId);
 
         try {
             ReplyResponseDTO responseDTO = replyService.detail(replyId);
@@ -57,6 +58,7 @@ public class ReplyApiController {
             @Validated @RequestBody ReplyRequestWriteDTO writeDTO
             ,BindingResult bindingResult
     ){
+        log.info("/api/oslob/reply/write : writeDTO : {}",writeDTO);
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
@@ -71,6 +73,7 @@ public class ReplyApiController {
             @Validated @RequestBody ReplyRequestModifyDTO modifyDTO
             , BindingResult bindingResult
     ){
+        log.info("/api/oslob/reply/modify : modifyDTO : {}",modifyDTO);
 
         if(bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
@@ -85,10 +88,12 @@ public class ReplyApiController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{replyId}")
     public ResponseEntity<?> delete(
-            @RequestParam Long replyId
+            @PathVariable Long replyId
     ){
+        log.info("/api/oslob/reply/delete/{}",replyId);
+
         try {
             replyService.delete(replyId);
             return ResponseEntity.ok().body("삭제가 완료되었습니다.");

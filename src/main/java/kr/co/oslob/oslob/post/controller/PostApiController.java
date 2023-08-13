@@ -29,7 +29,7 @@ public class PostApiController {
             , @RequestParam(required = false)String keyword
             ){
 
-        log.info("/api/oslob/board/list?offset={}&limit={}&keyword={}"
+        log.info("/api/oslob/post/list?offset={}&limit={}&keyword={}"
                 ,pageDTO.getOffset(),pageDTO.getLimit(),keyword);
 
         PostListResponseDTO responseDTO = postService.getList(pageDTO, keyword);
@@ -37,10 +37,11 @@ public class PostApiController {
         return ResponseEntity.ok().body(responseDTO);
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{postId}")
     public ResponseEntity<?> detail(
             @RequestParam Long postId
     ){
+        log.info("/api/oslob/detail/{}",postId);
 
         try {
             PostResponseDTO responseDTO = postService.detail(postId);
@@ -57,6 +58,7 @@ public class PostApiController {
             @Validated @RequestBody PostRequestWriteDTO writeDTO
             , BindingResult bindingResult
     ){
+        log.info("/api/oslob/post/write : writeDTO : {}",writeDTO);
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
@@ -72,6 +74,7 @@ public class PostApiController {
             @Validated @RequestBody PostRequestModifyDTO modifyDTO
             , BindingResult bindingResult
     ){
+        log.info("/api/oslob/post/modify : modifyDTO : {}",modifyDTO);
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
@@ -85,10 +88,12 @@ public class PostApiController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{postId}")
     public ResponseEntity<?> delete(
-            @RequestParam Long postId
+            @PathVariable Long postId
     ){
+        log.info("/api/oslob/post/delete/{}",postId);
+
         try {
             postService.delete(postId);
             return ResponseEntity.ok().body("삭제 성공했습니다.");

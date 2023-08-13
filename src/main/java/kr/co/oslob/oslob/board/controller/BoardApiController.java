@@ -43,10 +43,11 @@ public class BoardApiController {
         return ResponseEntity.ok().body(requestDTO);
     }
 
-    @GetMapping("/detail")
+    @GetMapping("/detail/{boardId}")
     public ResponseEntity<?> detail(
-            @RequestParam Long boardId
+            @PathVariable Long boardId
     ){
+        log.info("/api/oslob/board/detail/{}",boardId);
 
         try {
             BoardResponseDTO responseDTO = boardService.detail(boardId);
@@ -63,6 +64,7 @@ public class BoardApiController {
            @Validated @RequestBody BoardRequestWriteDTO writeDTO
            , BindingResult bindingResult
     ){
+        log.info("/api/oslob/board/write : writeDTO : {}",writeDTO);
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
@@ -77,6 +79,7 @@ public class BoardApiController {
             @Validated @RequestBody BoardRequestModifyDTO modifyDTO
             , BindingResult bindingResult
     ){
+        log.info("/api/oslob/board/modify : modifyDTO : {}",modifyDTO);
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.badRequest().body(INVALID_PARAMETER);
@@ -91,10 +94,11 @@ public class BoardApiController {
         }
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{boardId}")
     public ResponseEntity<?> delete(
-            @RequestParam Long boardId
+            @PathVariable Long boardId
     ){
+        log.info("/api/oslob/board/delete/{}",boardId);
 
         try {
             boardService.delete(boardId);
