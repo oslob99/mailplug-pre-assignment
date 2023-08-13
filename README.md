@@ -222,6 +222,7 @@ public enum ErrorCode implements CustomErrorCode{
 <img width="1174" alt="스크린샷 2023-08-14 오전 3 28 43" src="https://github.com/oslob99/mailplug-pre-assignment/assets/126937987/0aade555-b7ca-4748-a844-75e641d5a893">
 <br><br>
 ### Notion API 명세서
+
 [노션 바로가기](https://common-sheep-1e7.notion.site/API-3596a39c6a8d45f5b319aa5c4559c64e?pvs=4)
 
 ![스크린샷 2023-08-14 오전 3 30 33](https://github.com/oslob99/mailplug-pre-assignment/assets/126937987/4222437d-0ac9-48db-ba01-eb97acdbc6a0)
